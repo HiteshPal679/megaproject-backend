@@ -5,12 +5,27 @@ import dotenv from 'dotenv'
 // import {DB_NAME} from './constants'
 // import express from 'express'
 import connectDB from "./db/index.js";
+import {app} from './app.js'
 
 
 dotenv.config({
-    path:'./env'
+    path: './env'
 })
-connectDB();
+
+connectDB()
+    .then(() => {
+        app.listen(process.env.PORT || 80000, () => {
+            console.log(`server is running on PORT ${process.env.PORT}`)
+
+        })
+        app.on("error", (error) => {
+            console.log("error:", error)
+            throw error
+        })
+    })
+    .catch((err) => {
+        console.log("MONOGO db error--->", err)
+    })
 
 
 
